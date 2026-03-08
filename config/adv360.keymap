@@ -38,11 +38,11 @@
         numpad {
             display-name = "Np";
             bindings = <
-&kp EQUAL      &kp N1     &kp N2    &kp N3    &kp N4     &kp N5  &tog 3                                                    &mo 5      &kp N6            &kp N7            &kp N8                &kp N9    &kp N0    &kp MINUS
-&kp TAB        &kp Q      &kp W     &kp E     &kp R      &kp T   &trans                                                    &none      &kp Y             &kp U             &kp I                 &kp O     &kp P     &kp BSLH
-&kp BACKSPACE  &kp N1     &kp N2    &kp N3    &kp N4     &kp N5  &trans      &kp LGUI  &kp LALT      &kp LGUI   &kp RCTRL  &none      &kp LC(LG(LALT))  &kp LC(LG(HOME))  &kp LC(LEFT_BRACKET)  &kp N9    &kp N0    &kp SQT
-&kp LSHFT      &kp Z      &kp X     &kp C     &kp V      &kp B                         &kp HOME      &kp PG_UP                        &kp N             &kp M             &kp COMMA             &kp DOT   &kp FSLH  &kp RSHFT
-&kp LGUI       &kp GRAVE  &kp CAPS  &kp LEFT  &kp RIGHT          &kp ESCAPE  &kp DEL   &kp END       &kp PG_DN  &trans     &kp SPACE                    &kp UP            &kp DOWN              &kp LBKT  &kp RBKT  &kp RETURN
+&kp EQUAL      &kp N1     &kp N2    &kp N3    &kp N4     &kp N5  &tog 3                                                    &mo 5      &kp N6            &kp N7            &kp N8                &kp N9           &kp N0    &kp MINUS
+&kp TAB        &kp Q      &kp W     &kp E     &kp R      &kp T   &trans                                                    &none      &kp Y             &kp U             &kp I                 &kp O            &kp P     &kp BSLH
+&kp BACKSPACE  &kp N1     &kp N2    &kp N3    &kp N4     &kp N5  &trans      &kp LGUI  &kp LALT      &kp LGUI   &kp RCTRL  &none      &kp LC(LG(LALT))  &kp LC(LG(HOME))  &kp LC(LEFT_BRACKET)  &kp LC(LG(END))  &kp N0    &kp SQT
+&kp LSHFT      &kp Z      &kp X     &kp C     &kp V      &kp B                         &kp HOME      &kp PG_UP                        &kp N             &kp M             &kp COMMA             &kp DOT          &kp FSLH  &kp RSHFT
+&kp LGUI       &kp GRAVE  &kp CAPS  &kp LEFT  &kp RIGHT          &kp ESCAPE  &kp DEL   &kp END       &kp PG_DN  &trans     &kp SPACE                    &kp UP            &kp DOWN              &kp LBKT         &kp RBKT  &kp RETURN
             >;
         };
 
