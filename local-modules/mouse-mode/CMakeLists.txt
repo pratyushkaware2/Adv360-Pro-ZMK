@@ -1,4 +1,5 @@
 if(CONFIG_ZMK_SPLIT_ROLE_CENTRAL OR NOT CONFIG_ZMK_SPLIT)
   zephyr_library()
+  zephyr_library_include_directories(${APPLICATION_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/include)
   zephyr_library_sources(src/behavior_mouse_mode.c)
 endif()
