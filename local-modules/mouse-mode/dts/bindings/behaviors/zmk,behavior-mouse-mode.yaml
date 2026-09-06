@@ -1,0 +1,10 @@
+description: Momentary mouse layer with toggle-held dragging and cleanup
+compatible: "zmk,behavior-mouse-mode"
+include: one_param.yaml
+properties:
+  layer:
+    type: int
+    required: true
+  movement-behavior:
+    type: phandle
+    required: true

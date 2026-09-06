@@ -22,6 +22,8 @@ for name, body in layers:
     parsed.append(keys)
 for i, keys in enumerate(parsed[:3]):
     assert keys[7] == "&mo 8"
+    assert keys[34] == "&mouse_mode MOUSE_HOLD"
+    assert keys[39] == "&mo 5"
     assert keys[28] == "&kp BACKSPACE"
     assert keys[65] == ("&kp LGUI" if i == 1 else "&kp LCTRL")
     assert keys[66] == "&kp LCTRL"
@@ -34,7 +36,7 @@ for layer in re.findall(r"&(?:mo|to)\s+(\d+)", source):
     assert int(layer) < len(layers)
 for host, bt, layer in (("mac", 0, 1), ("linux", 1, 2), ("windows", 2, 0), ("server", 3, 2)):
     body = re.search(r"host_" + host + r":\s*host_" + host + r"\s*\{(.*?)\};", source, re.S).group(1)
-    assert re.search(r"bindings\s*=\s*<&bt BT_SEL " + str(bt) + r">,\s*<&to " + str(layer) + r">;", body)
+    assert re.search(r"bindings\s*=\s*<&macro_wait_time 50 &mouse_mode MOUSE_EXIT>,\s*<&macro_wait_time 0 &bt BT_SEL " + str(bt) + r">,\s*<&to " + str(layer) + r">;", body)
 print("Legacy indices, device macros, bootloader keys and thumb bindings verified.")
 
 hyper = re.search(r"win_hyper:\s*win_hyper\s*\{(.*?)\};", source, re.S).group(1)
@@ -45,3 +47,10 @@ assert sequence == ("&macro_press &kp LCTRL &kp LSHFT &kp LALT &kp F24 "
                     "&macro_release &kp F24 &kp LALT &kp LSHFT &kp LCTRL"), "Windows Hyper must hold explicit modifiers and release each exactly once"
 assert re.search(r"wait-ms\s*=\s*<0>", hyper)
 print("Windows Hyper explicitly holds modifiers across command keys and releases them on thumb-up.")
+
+for index, command in {20: "EXIT", 60: "EXIT", 22: "DRAG", 23: "LEFT_CLICK", 24: "RIGHT_CLICK", 25: "MIDDLE_CLICK", 40: "LEFT", 41: "DOWN", 42: "UP", 43: "RIGHT"}.items():
+    assert parsed[7][index] == "&mouse_mode MOUSE_" + command
+assert parsed[7][34] == "&trans"
+assert not any(key.startswith(("&mkp", "&mmv")) for key in parsed[7])
+assert 'movement-behavior = <&mmv>' in source
+print("Momentary Mouse, drag/click/movement wrappers and pre-switch cleanup verified.")

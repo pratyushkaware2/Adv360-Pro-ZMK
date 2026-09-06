@@ -1,0 +1,5 @@
+name: adv360-mouse-mode
+build:
+  cmake: .
+  settings:
+    dts_root: .

@@ -12,7 +12,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Verify Legacy layer indices and key bindings
-        run: python3 bin/check_keymap.py
+        run: |
+          python3 bin/check_keymap.py
+          cc -std=c99 -Wall -Wextra -Werror bin/test_mouse_state.c -o /tmp/test-mouse-state
+          /tmp/test-mouse-state
       - name: Get version data
         id: get_info
         run: |
@@ -45,14 +48,14 @@ jobs:
       - name: West Zephyr export
         run: west zephyr-export
       - name: West Build (left)
-        run: west build -s zmk/app -d build/left -b adv360_left -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf"
+        run: west build -s zmk/app -d build/left -b adv360_left -- -DZMK_EXTRA_MODULES="${GITHUB_WORKSPACE}/local-modules/mouse-mode" -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf"
       - name: Adv360 Left Kconfig file
         run: |
           grep -vE '(^#|^$)' build/left/zephyr/.config
           grep -qx 'CONFIG_ZMK_HID_REPORT_TYPE_NKRO=y' build/left/zephyr/.config
           grep -qx 'CONFIG_ZMK_HID_KEYBOARD_NKRO_EXTENDED_REPORT=y' build/left/zephyr/.config
       - name: West Build (right)
-        run: west build -s zmk/app -d build/right -b adv360_right -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf"
+        run: west build -s zmk/app -d build/right -b adv360_right -- -DZMK_EXTRA_MODULES="${GITHUB_WORKSPACE}/local-modules/mouse-mode" -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf"
       - name: Adv360 Right Kconfig file
         run: |
           grep -vE '(^#|^$)' build/right/zephyr/.config
@@ -76,7 +79,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Verify Legacy layer indices and key bindings
-        run: python3 bin/check_keymap.py
+        run: |
+          python3 bin/check_keymap.py
+          cc -std=c99 -Wall -Wextra -Werror bin/test_mouse_state.c -o /tmp/test-mouse-state
+          /tmp/test-mouse-state
       - name: Get version data
         id: get_info
         run: |
@@ -109,14 +115,14 @@ jobs:
       - name: West Zephyr export
         run: west zephyr-export
       - name: West Build (left)
-        run: west build -s zmk/app -d build/left -b adv360_left -S studio-rpc-usb-uart -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf" -DCONFIG_ZMK_STUDIO=y
+        run: west build -s zmk/app -d build/left -b adv360_left -S studio-rpc-usb-uart -- -DZMK_EXTRA_MODULES="${GITHUB_WORKSPACE}/local-modules/mouse-mode" -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf" -DCONFIG_ZMK_STUDIO=y
       - name: Adv360 Left Kconfig file
         run: |
           grep -vE '(^#|^$)' build/left/zephyr/.config
           grep -qx 'CONFIG_ZMK_HID_REPORT_TYPE_NKRO=y' build/left/zephyr/.config
           grep -qx 'CONFIG_ZMK_HID_KEYBOARD_NKRO_EXTENDED_REPORT=y' build/left/zephyr/.config
       - name: West Build (right)
-        run: west build -s zmk/app -d build/right -b adv360_right -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf"
+        run: west build -s zmk/app -d build/right -b adv360_right -- -DZMK_EXTRA_MODULES="${GITHUB_WORKSPACE}/local-modules/mouse-mode" -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf"
       - name: Adv360 Right Kconfig file
         run: |
           grep -vE '(^#|^$)' build/right/zephyr/.config
