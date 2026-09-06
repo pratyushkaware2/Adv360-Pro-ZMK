@@ -1,4 +1,4 @@
-// USER-APPROVED SOURCE (build/flash pending): device keys 1=Mac, 2=Linux, 3=Windows, 4=Linux server.
+// USER-APPROVED LAYOUT: device keys 1=Mac, 2=Linux, 3=Windows, 4=Linux server.
 // The boot default is Windows (no GUI in Hyper). Reselect a device after power-on.
 // No tap-hold timing, no letter chords, no toggled utility layers.
 #include <dt-bindings/zmk/stp.h>
@@ -74,11 +74,17 @@
         };
         unused_3 {
             display-name = "Unused";
-            status = "reserved";
+            // Keep this slot active: Legacy omits status="reserved" layers.
+            bindings = <
+                &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+            >;
         };
         unused_4 {
             display-name = "Unused";
-            status = "reserved";
+            // Keep this slot active: Legacy omits status="reserved" layers.
+            bindings = <
+                &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+            >;
         };
         numbers {
             display-name = "Numbers";
@@ -122,7 +128,10 @@
         };
         reserved {
             display-name = "Reserved";
-            status = "reserved";
+            // Keep this slot active: Legacy omits status="reserved" layers.
+            bindings = <
+                &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+            >;
         };
     };
 };
