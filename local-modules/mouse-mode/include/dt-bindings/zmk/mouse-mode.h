@@ -1,5 +1,5 @@
 #pragma once
-#define MOUSE_HOLD 0
+#define MOUSE_TOGGLE 0
 #define MOUSE_EXIT 1
 #define MOUSE_DRAG 2
 #define MOUSE_LEFT_CLICK 3

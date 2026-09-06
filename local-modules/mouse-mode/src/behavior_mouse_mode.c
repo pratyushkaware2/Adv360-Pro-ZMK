@@ -50,8 +50,9 @@ static int exit_mouse(void) {
 
 static int pressed(struct zmk_behavior_binding *binding, struct zmk_behavior_binding_event event) {
     switch (binding->param1) {
-    case MOUSE_HOLD:
-        return zmk_keymap_layer_activate(MOUSE_LAYER);
+    case MOUSE_TOGGLE:
+        return zmk_keymap_layer_active(MOUSE_LAYER) ? exit_mouse()
+                                                  : zmk_keymap_layer_activate(MOUSE_LAYER);
     case MOUSE_EXIT:
         return exit_mouse();
     default:
@@ -71,9 +72,6 @@ static int pressed(struct zmk_behavior_binding *binding, struct zmk_behavior_bin
 }
 
 static int released(struct zmk_behavior_binding *binding, struct zmk_behavior_binding_event event) {
-    if (binding->param1 == MOUSE_HOLD) {
-        return exit_mouse();
-    }
     if (binding->param1 >= MOUSE_LEFT_CLICK && binding->param1 <= MOUSE_MIDDLE_CLICK) {
         mouse_button(&state, binding->param1 - MOUSE_LEFT_CLICK, false, emit_button);
     } else if (binding->param1 >= MOUSE_LEFT && binding->param1 <= MOUSE_RIGHT) {

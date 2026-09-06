@@ -22,7 +22,7 @@ for name, body in layers:
     parsed.append(keys)
 for i, keys in enumerate(parsed[:3]):
     assert keys[7] == "&mo 8"
-    assert keys[34] == "&mouse_mode MOUSE_HOLD"
+    assert keys[34] == "&mouse_mode MOUSE_TOGGLE"
     assert keys[39] == "&mo 5"
     assert keys[28] == "&kp BACKSPACE"
     assert keys[65] == ("&kp LGUI" if i == 1 else "&kp LCTRL")
@@ -53,4 +53,4 @@ for index, command in {20: "EXIT", 60: "EXIT", 22: "DRAG", 23: "LEFT_CLICK", 24:
 assert parsed[7][34] == "&trans"
 assert not any(key.startswith(("&mkp", "&mmv")) for key in parsed[7])
 assert 'movement-behavior = <&mmv>' in source
-print("Momentary Mouse, drag/click/movement wrappers and pre-switch cleanup verified.")
+print("Toggle Mouse, drag/click/movement wrappers and pre-switch cleanup verified.")

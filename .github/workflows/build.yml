@@ -14,6 +14,7 @@ jobs:
       - name: Verify Legacy layer indices and key bindings
         run: |
           python3 bin/check_keymap.py
+          python3 bin/test_mouse_mode.py
           cc -std=c99 -Wall -Wextra -Werror bin/test_mouse_state.c -o /tmp/test-mouse-state
           /tmp/test-mouse-state
       - name: Get version data
@@ -81,6 +82,7 @@ jobs:
       - name: Verify Legacy layer indices and key bindings
         run: |
           python3 bin/check_keymap.py
+          python3 bin/test_mouse_mode.py
           cc -std=c99 -Wall -Wextra -Werror bin/test_mouse_state.c -o /tmp/test-mouse-state
           /tmp/test-mouse-state
       - name: Get version data
