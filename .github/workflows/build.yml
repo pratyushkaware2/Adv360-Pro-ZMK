@@ -43,13 +43,19 @@ jobs:
       - name: West Zephyr export
         run: west zephyr-export
       - name: West Build (left)
-        run: west build -s zmk/app -d build/left -b adv360_left -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
+        run: west build -s zmk/app -d build/left -b adv360_left -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf"
       - name: Adv360 Left Kconfig file
-        run: grep -vE '(^#|^$)' build/left/zephyr/.config
+        run: |
+          grep -vE '(^#|^$)' build/left/zephyr/.config
+          grep -qx 'CONFIG_ZMK_HID_REPORT_TYPE_NKRO=y' build/left/zephyr/.config
+          grep -qx 'CONFIG_ZMK_HID_KEYBOARD_NKRO_EXTENDED_REPORT=y' build/left/zephyr/.config
       - name: West Build (right)
-        run: west build -s zmk/app -d build/right -b adv360_right -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
+        run: west build -s zmk/app -d build/right -b adv360_right -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf"
       - name: Adv360 Right Kconfig file
-        run: grep -vE '(^#|^$)' build/right/zephyr/.config
+        run: |
+          grep -vE '(^#|^$)' build/right/zephyr/.config
+          grep -qx 'CONFIG_ZMK_HID_REPORT_TYPE_NKRO=y' build/right/zephyr/.config
+          grep -qx 'CONFIG_ZMK_HID_KEYBOARD_NKRO_EXTENDED_REPORT=y' build/right/zephyr/.config
       - name: Rename zmk.uf2
         run: cp build/left/zephyr/zmk.uf2 ${{ steps.get_info.outputs.file_prefix }}-left.uf2 && cp build/right/zephyr/zmk.uf2 ${{ steps.get_info.outputs.file_prefix }}-right.uf2
       - name: Archive (Adv360)
@@ -99,13 +105,19 @@ jobs:
       - name: West Zephyr export
         run: west zephyr-export
       - name: West Build (left)
-        run: west build -s zmk/app -d build/left -b adv360_left -S studio-rpc-usb-uart -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DCONFIG_ZMK_STUDIO=y
+        run: west build -s zmk/app -d build/left -b adv360_left -S studio-rpc-usb-uart -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf" -DCONFIG_ZMK_STUDIO=y
       - name: Adv360 Left Kconfig file
-        run: grep -vE '(^#|^$)' build/left/zephyr/.config
+        run: |
+          grep -vE '(^#|^$)' build/left/zephyr/.config
+          grep -qx 'CONFIG_ZMK_HID_REPORT_TYPE_NKRO=y' build/left/zephyr/.config
+          grep -qx 'CONFIG_ZMK_HID_KEYBOARD_NKRO_EXTENDED_REPORT=y' build/left/zephyr/.config
       - name: West Build (right)
-        run: west build -s zmk/app -d build/right -b adv360_right -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
+        run: west build -s zmk/app -d build/right -b adv360_right -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" -DEXTRA_CONF_FILE="${GITHUB_WORKSPACE}/config/prj.conf"
       - name: Adv360 Right Kconfig file
-        run: grep -vE '(^#|^$)' build/right/zephyr/.config
+        run: |
+          grep -vE '(^#|^$)' build/right/zephyr/.config
+          grep -qx 'CONFIG_ZMK_HID_REPORT_TYPE_NKRO=y' build/right/zephyr/.config
+          grep -qx 'CONFIG_ZMK_HID_KEYBOARD_NKRO_EXTENDED_REPORT=y' build/right/zephyr/.config
       - name: Rename zmk.uf2
         run: cp build/left/zephyr/zmk.uf2 ${{ steps.get_info.outputs.file_prefix }}-left.uf2 && cp build/right/zephyr/zmk.uf2 ${{ steps.get_info.outputs.file_prefix }}-right.uf2
       - name: Archive (Adv360)
