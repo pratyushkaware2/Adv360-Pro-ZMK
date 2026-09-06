@@ -25,7 +25,7 @@ for i, keys in enumerate(parsed[:3]):
     assert keys[28] == "&kp BACKSPACE"
     assert keys[65] == ("&kp LGUI" if i == 1 else "&kp LCTRL")
     assert keys[66] == "&kp LCTRL"
-    assert keys[69] == ("&kp LS(LC(LA(F24)))" if i == 0 else "&kp LS(LC(LA(LGUI)))")
+    assert keys[69] == ("&win_hyper" if i == 0 else "&kp LS(LC(LA(LGUI)))")
 assert parsed[8][1:5] == ["&host_mac", "&host_linux", "&host_windows", "&host_server"]
 assert parsed[8][20:22] == ["&bootloader", "&bootloader"]
 for index in (3, 4, 9):
@@ -36,3 +36,12 @@ for host, bt, layer in (("mac", 0, 1), ("linux", 1, 2), ("windows", 2, 0), ("ser
     body = re.search(r"host_" + host + r":\s*host_" + host + r"\s*\{(.*?)\};", source, re.S).group(1)
     assert re.search(r"bindings\s*=\s*<&bt BT_SEL " + str(bt) + r">,\s*<&to " + str(layer) + r">;", body)
 print("Legacy indices, device macros, bootloader keys and thumb bindings verified.")
+
+hyper = re.search(r"win_hyper:\s*win_hyper\s*\{(.*?)\};", source, re.S).group(1)
+sequence = re.search(r"bindings\s*=\s*(.*?);", hyper, re.S).group(1)
+sequence = " ".join(re.sub(r"[<>,]", " ", sequence).split())
+assert sequence == ("&macro_press &kp LCTRL &kp LSHFT &kp LALT &kp F24 "
+                    "&macro_pause_for_release "
+                    "&macro_release &kp F24 &kp LALT &kp LSHFT &kp LCTRL"), "Windows Hyper must hold explicit modifiers and release each exactly once"
+assert re.search(r"wait-ms\s*=\s*<0>", hyper)
+print("Windows Hyper explicitly holds modifiers across command keys and releases them on thumb-up.")
