@@ -51,6 +51,12 @@ print("Windows Hyper explicitly holds modifiers across command keys and releases
 for index, command in {20: "EXIT", 60: "EXIT", 22: "DRAG", 23: "LEFT_CLICK", 24: "RIGHT_CLICK", 25: "MIDDLE_CLICK", 40: "LEFT", 41: "DOWN", 42: "UP", 43: "RIGHT"}.items():
     assert parsed[7][index] == "&mouse_mode MOUSE_" + command
 assert parsed[7][34] == "&trans"
-assert not any(key.startswith(("&mkp", "&mmv")) for key in parsed[7])
+assert not any(key.startswith(("&mkp", "&mmv", "&msc")) for key in parsed[7])
 assert 'movement-behavior = <&mmv>' in source
 print("Toggle Mouse, drag/click/movement wrappers and pre-switch cleanup verified.")
+
+# Locate new controls using the actual base letters, including thumb-cluster gaps.
+for base, command in {"D": "PRECISE", "F": "FAST", "N": "SCROLL_LEFT", "M": "SCROLL_DOWN", "COMMA": "SCROLL_UP", "DOT": "SCROLL_RIGHT"}.items():
+    index = parsed[0].index("&kp " + base)
+    assert parsed[7][index] == "&mouse_mode MOUSE_" + command, (base, index)
+print("Mouse D/F speed controls and N/M/comma/period scrolling match physical base keys.")

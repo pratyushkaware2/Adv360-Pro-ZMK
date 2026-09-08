@@ -15,7 +15,17 @@
 
 #define MOUSE_LAYER DT_INST_PROP(0, layer)
 static struct mouse_state state;
-static const uint32_t directions[] = {MOVE_LEFT, MOVE_DOWN, MOVE_UP, MOVE_RIGHT};
+static const uint32_t directions[][4] = {
+    {MOVE_LEFT, MOVE_DOWN, MOVE_UP, MOVE_RIGHT},
+    {MOVE_X(-150), MOVE_Y(150), MOVE_Y(-150), MOVE_X(150)},
+    {MOVE_X(-1200), MOVE_Y(1200), MOVE_Y(-1200), MOVE_X(1200)},
+};
+static const uint32_t scroll_directions[] = {SCRL_LEFT, SCRL_DOWN, SCRL_UP, SCRL_RIGHT};
+static const char *const movement_behaviors[] = {
+    DEVICE_DT_NAME(DT_INST_PHANDLE(0, movement_behavior)),
+    DEVICE_DT_NAME(DT_INST_PHANDLE(0, precise_behavior)),
+    DEVICE_DT_NAME(DT_INST_PHANDLE(0, fast_behavior)),
+};
 
 static void emit_button(unsigned int button, bool down) {
     // Own one HID reference per logical button. U and Y share that reference,
@@ -28,10 +38,21 @@ static void emit_button(unsigned int button, bool down) {
     zmk_endpoints_send_mouse_report();
 }
 
-static void emit_move(unsigned int direction, bool down) {
+static void emit_move(unsigned int direction, enum mouse_speed speed, bool down) {
     const struct zmk_behavior_binding binding = {
-        .behavior_dev = DEVICE_DT_NAME(DT_INST_PHANDLE(0, movement_behavior)),
-        .param1 = directions[direction],
+        .behavior_dev = movement_behaviors[speed],
+        .param1 = directions[speed][direction],
+    };
+    const struct zmk_behavior_binding_event event = {
+        .layer = MOUSE_LAYER, .timestamp = k_uptime_get(),
+    };
+    zmk_behavior_invoke_binding(&binding, event, down);
+}
+
+static void emit_scroll(unsigned int direction, bool down) {
+    const struct zmk_behavior_binding binding = {
+        .behavior_dev = DEVICE_DT_NAME(DT_INST_PHANDLE(0, scroll_behavior)),
+        .param1 = scroll_directions[direction],
     };
     const struct zmk_behavior_binding_event event = {
         .layer = MOUSE_LAYER, .timestamp = k_uptime_get(),
@@ -40,7 +61,7 @@ static void emit_move(unsigned int direction, bool down) {
 }
 
 static void clear_mouse(void) {
-    mouse_clear(&state, emit_button, emit_move);
+    mouse_clear(&state, emit_button, emit_move, emit_scroll);
 }
 
 static int exit_mouse(void) {
@@ -67,6 +88,10 @@ static int pressed(struct zmk_behavior_binding *binding, struct zmk_behavior_bin
         mouse_button(&state, binding->param1 - MOUSE_LEFT_CLICK, true, emit_button);
     } else if (binding->param1 >= MOUSE_LEFT && binding->param1 <= MOUSE_RIGHT) {
         mouse_move(&state, binding->param1 - MOUSE_LEFT, true, emit_move);
+    } else if (binding->param1 >= MOUSE_SCROLL_LEFT && binding->param1 <= MOUSE_SCROLL_RIGHT) {
+        mouse_scroll(&state, binding->param1 - MOUSE_SCROLL_LEFT, true, emit_scroll);
+    } else if (binding->param1 == MOUSE_PRECISE || binding->param1 == MOUSE_FAST) {
+        mouse_set_speed(&state, binding->param1 == MOUSE_PRECISE, true, emit_move);
     }
     return ZMK_BEHAVIOR_OPAQUE;
 }
@@ -76,6 +101,10 @@ static int released(struct zmk_behavior_binding *binding, struct zmk_behavior_bi
         mouse_button(&state, binding->param1 - MOUSE_LEFT_CLICK, false, emit_button);
     } else if (binding->param1 >= MOUSE_LEFT && binding->param1 <= MOUSE_RIGHT) {
         mouse_move(&state, binding->param1 - MOUSE_LEFT, false, emit_move);
+    } else if (binding->param1 >= MOUSE_SCROLL_LEFT && binding->param1 <= MOUSE_SCROLL_RIGHT) {
+        mouse_scroll(&state, binding->param1 - MOUSE_SCROLL_LEFT, false, emit_scroll);
+    } else if (binding->param1 == MOUSE_PRECISE || binding->param1 == MOUSE_FAST) {
+        mouse_set_speed(&state, binding->param1 == MOUSE_PRECISE, false, emit_move);
     }
     return ZMK_BEHAVIOR_OPAQUE;
 }

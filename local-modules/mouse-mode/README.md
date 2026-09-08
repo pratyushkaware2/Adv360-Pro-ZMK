@@ -30,3 +30,31 @@ Smoke test on a blank desktop: movement in all four directions; U and I clicks;
 Y then movement then Y for drag; tap ② off during movement/drag; Escape;
 re-enter and confirm no stale click; Mod+1/2/3/4 and ordinary typing/thumb keys.
 Do not infer deployment from a successful build.
+
+## Scrolling and speed controls
+
+While Mouse is active, N/M/comma/period scroll left/down/up/right. These are
+ordinary horizontal and vertical HID wheel events (10 steps/second); OS and
+application scroll preferences still affect the result. No host remapper or
+high-resolution scrolling option is required.
+
+Hold D for constant precision movement (150 HID counts/second), or F for
+constant fast movement (1200 counts/second). Normal movement remains the
+vendor mmv behavior (600 counts/second maximum with a 300 ms ramp). These are
+relative HID units, not guaranteed screen pixels. Precision wins while both
+D and F are held; releasing it resumes Fast if F is still held. Releasing
+both restores Normal. Controls affect cursor movement, not wheel speed or
+host modifiers. Both speed changes and diagonals work during a Y-latched drag.
+
+The wrapper releases the previous movement behavior with its original value
+before activating the replacement. It owns scrolling releases too. Toggle-off,
+Escape, layer deactivation and endpoint changes clear motion, wheel actions,
+buttons and speed controls. Late physical key releases cannot restart motion.
+The two constant-speed behaviors need their input listeners from the keymap;
+keep them alongside the module. Normal movement still delegates to vendor mmv.
+
+Test after flashing on each host: HJKL normal movement; hold D and F before
+and during motion; N/M/comma/period wheel direction; Y drag with speed changes;
+exit while moving/scrolling/dragging; select another host. Re-entry must start
+at normal speed with no button latched. Host-side tests cannot validate radio
+delivery, pointer gain or physical feel.
