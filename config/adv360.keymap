@@ -94,6 +94,15 @@
             bindings = <&macro_wait_time 50 &mouse_mode MOUSE_EXIT>,
                        <&macro_wait_time 0 &bt BT_SEL 3>, <&to 2>;
         };
+        host_ipad: host_ipad {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <0>;
+            // Slot 5 uses the Mac layout; release mouse actions before switching.
+            bindings = <&macro_wait_time 50 &mouse_mode MOUSE_EXIT>,
+                       <&macro_wait_time 0 &bt BT_SEL 4>, <&to 1>;
+        };
     };
     keymap {
         compatible = "zmk,keymap";
@@ -174,7 +183,7 @@
         system {
             display-name = "System";
             bindings = <
-                &studio_unlock  &host_mac  &host_linux  &host_windows  &host_server  &none  &none  &trans  &none  &none  &none  &none  &none  &bt BT_CLR
+                &studio_unlock  &host_mac  &host_linux  &host_windows  &host_server  &host_ipad  &none  &trans  &none  &none  &none  &none  &none  &bt BT_CLR
                 &none  &none  &to 0  &none  &none  &none  &bootloader  &bootloader  &none  &none  &none  &none  &none  &none
                 &none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &none  &stp STP_BAT  &none  &none  &none  &to 2  &none  &none
                 &none  &none  &none  &none  &none  &none  &none  &none  &none  &to 1  &none  &none  &none  &none

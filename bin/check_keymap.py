@@ -28,13 +28,13 @@ for i, keys in enumerate(parsed[:3]):
     assert keys[65] == ("&kp LGUI" if i == 1 else "&kp LCTRL")
     assert keys[66] == "&kp LCTRL"
     assert keys[69] == ("&win_hyper" if i == 0 else "&kp LS(LC(LA(LGUI)))")
-assert parsed[8][1:5] == ["&host_mac", "&host_linux", "&host_windows", "&host_server"]
+assert parsed[8][1:6] == ["&host_mac", "&host_linux", "&host_windows", "&host_server", "&host_ipad"]
 assert parsed[8][20:22] == ["&bootloader", "&bootloader"]
 for index in (3, 4, 9):
     assert set(parsed[index]) == {"&trans"}
 for layer in re.findall(r"&(?:mo|to)\s+(\d+)", source):
     assert int(layer) < len(layers)
-for host, bt, layer in (("mac", 0, 1), ("linux", 1, 2), ("windows", 2, 0), ("server", 3, 2)):
+for host, bt, layer in (("mac", 0, 1), ("linux", 1, 2), ("windows", 2, 0), ("server", 3, 2), ("ipad", 4, 1)):
     body = re.search(r"host_" + host + r":\s*host_" + host + r"\s*\{(.*?)\};", source, re.S).group(1)
     assert re.search(r"bindings\s*=\s*<&macro_wait_time 50 &mouse_mode MOUSE_EXIT>,\s*<&macro_wait_time 0 &bt BT_SEL " + str(bt) + r">,\s*<&to " + str(layer) + r">;", body)
 print("Legacy indices, device macros, bootloader keys and thumb bindings verified.")
