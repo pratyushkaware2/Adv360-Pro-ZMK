@@ -1,4 +1,4 @@
-// USER-APPROVED LAYOUT: device keys 1=Mac, 2=Linux, 3=Windows, 4=Linux server.
+// USER-APPROVED LAYOUT: device keys 1=Mac, 2=Linux, 3=Windows, 4=Linux server, 5=iPad.
 // The boot default is Windows (no GUI in Hyper). Reselect a device after power-on.
 // No tap-hold timing, no letter chords, Mouse is toggled; other utility layers are momentary.
 #include <dt-bindings/zmk/stp.h>
@@ -99,9 +99,9 @@
             #binding-cells = <0>;
             wait-ms = <0>;
             tap-ms = <0>;
-            // Slot 5 uses the Mac layout; release mouse actions before switching.
+            // Slot 5 owns the iPad base; release mouse actions before switching.
             bindings = <&macro_wait_time 50 &mouse_mode MOUSE_EXIT>,
-                       <&macro_wait_time 0 &bt BT_SEL 4>, <&to 1>;
+                       <&macro_wait_time 0 &bt BT_SEL 4>, <&to 3>;
         };
     };
     keymap {
@@ -136,11 +136,16 @@
                 &kp ESCAPE  &kp GRAVE  &kp LCTRL  &kp LEFT  &kp RIGHT  &kp LCTRL  &kp LCTRL  &kp END  &kp PG_DN  &kp LS(LC(LA(LGUI)))  &kp SPACE  &kp UP  &kp DOWN  &kp LBKT  &kp RBKT  &kp RETURN
             >;
         };
-        unused_3 {
-            display-name = "Unused";
-            // Keep this slot active: Legacy omits status="reserved" layers.
+        ipados {
+            display-name = "iPad";
+            // Right Hyper thumb becomes Globe via iPad Modifier Keys: Caps Lock -> Globe.
+            // CAPS carrier preserves BASIC consumer reports and all other hosts.
             bindings = <
-                &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+                &kp EQUAL  &kp N1  &kp N2  &kp N3  &kp N4  &kp N5  &mo 6  &mo 8  &kp N6  &kp N7  &kp N8  &kp N9  &kp N0  &kp MINUS
+                &kp TAB  &kp Q  &kp W  &kp E  &kp R  &kp T  &kp ESCAPE  &kp DELETE  &kp Y  &kp U  &kp I  &kp O  &kp P  &kp BSLH
+                &kp BACKSPACE  &kp A  &kp S  &kp D  &kp F  &kp G  &mouse_mode MOUSE_TOGGLE  &kp LCTRL  &kp LALT  &kp LGUI  &kp RCTRL  &mo 5  &kp H  &kp J  &kp K  &kp L  &kp SEMI  &kp SQT
+                &kp LSHFT  &kp Z  &kp X  &kp C  &kp V  &kp B  &kp HOME  &kp PG_UP  &kp N  &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp RSHFT
+                &kp ESCAPE  &kp GRAVE  &kp LCTRL  &kp LEFT  &kp RIGHT  &kp LGUI  &kp LCTRL  &kp END  &kp PG_DN  &kp CAPSLOCK  &kp SPACE  &kp UP  &kp DOWN  &kp LBKT  &kp RBKT  &kp RETURN
             >;
         };
         unused_4 {

@@ -11,7 +11,7 @@ nodes = re.findall(r"(\w+)\s*\{([^{}]*)\};", keymap, re.S)
 # Legacy uses DT_INST_FOREACH_CHILD_STATUS_OKAY_SEP, not all child nodes.
 layers = [(name, body) for name, body in nodes
           if not re.search(r'status\s*=\s*"(?!okay"|ok")[^"]+"', body)]
-expected = ["windows", "macos", "linux", "unused_3", "unused_4",
+expected = ["windows", "macos", "linux", "ipados", "unused_4",
             "numbers", "function", "pointer", "system", "reserved"]
 assert [name for name, _ in layers] == expected, "Legacy layer indices shifted: keep unused slots enabled"
 parsed = []
@@ -30,11 +30,11 @@ for i, keys in enumerate(parsed[:3]):
     assert keys[69] == ("&win_hyper" if i == 0 else "&kp LS(LC(LA(LGUI)))")
 assert parsed[8][1:6] == ["&host_mac", "&host_linux", "&host_windows", "&host_server", "&host_ipad"]
 assert parsed[8][20:22] == ["&bootloader", "&bootloader"]
-for index in (3, 4, 9):
+for index in (4, 9):
     assert set(parsed[index]) == {"&trans"}
 for layer in re.findall(r"&(?:mo|to)\s+(\d+)", source):
     assert int(layer) < len(layers)
-for host, bt, layer in (("mac", 0, 1), ("linux", 1, 2), ("windows", 2, 0), ("server", 3, 2), ("ipad", 4, 1)):
+for host, bt, layer in (("mac", 0, 1), ("linux", 1, 2), ("windows", 2, 0), ("server", 3, 2), ("ipad", 4, 3)):
     body = re.search(r"host_" + host + r":\s*host_" + host + r"\s*\{(.*?)\};", source, re.S).group(1)
     assert re.search(r"bindings\s*=\s*<&macro_wait_time 50 &mouse_mode MOUSE_EXIT>,\s*<&macro_wait_time 0 &bt BT_SEL " + str(bt) + r">,\s*<&to " + str(layer) + r">;", body)
 print("Legacy indices, device macros, bootloader keys and thumb bindings verified.")
@@ -60,3 +60,7 @@ for base, command in {"D": "PRECISE", "F": "FAST", "N": "SCROLL_LEFT", "M": "SCR
     index = parsed[0].index("&kp " + base)
     assert parsed[7][index] == "&mouse_mode MOUSE_" + command, (base, index)
 print("Mouse D/F speed controls and N/M/comma/period scrolling match physical base keys.")
+
+# iPad must be a complete Mac-style base with exactly one intentional difference.
+assert [(i, a, b) for i, (a, b) in enumerate(zip(parsed[1], parsed[3])) if a != b] == [(69, "&kp LS(LC(LA(LGUI)))", "&kp CAPSLOCK")]
+print("Dedicated iPad base preserves all Mac positions and replaces only the Hyper thumb with the Caps Lock carrier for iPad Globe.")
